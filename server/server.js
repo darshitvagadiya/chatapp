@@ -16,12 +16,29 @@ app.use(bodyParser.urlencoded({ extended: false }));
 io.on('connection', (socket) => {
 	console.log('new user connected');
 
-	socket.on('createMesg', function(data){
+	socket.emit('newMsg', {
+		from: 'Admin',
+		text: 'Welcome to chat App',
+		createdAt: new Date().getTime()
+	});
+
+	socket.broadcast.emit('newMsg', {
+		from: 'Admin',
+		text: 'New user joined',
+		createdAt: new Date().getTime()
+	});
+
+	socket.on('createMsg', function(data){
 		io.emit('newMessage', {
 			from: data.from,
 			text: data.text,
 			createdAt: new Date().getTime()
 		});
+		// socket.broadcast.emit('newMsg', {
+		// 	from: data.from,
+		// 	text: data.text,
+		// 	createdAt: new Date().getTime()
+		// });
 	});
 
 	socket.on('disconnect', () => {
