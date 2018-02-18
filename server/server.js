@@ -16,6 +16,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 io.on('connection', (socket) => {
 	console.log('new user connected');
 
+	socket.emit('newMessage', {
+		from: 'Darshit',
+		text: 'Hello from server',
+		createdAt: 51515
+	});
+
+	socket.on('createMesg', function(data){
+		console.log('message: ', data);
+	});
+
 	socket.on('disconnect', () => {
 		console.log('user is disconnected from client side');
 	});
